@@ -50,7 +50,7 @@
 @endphp
 <section class="grid gap-4 grid-cols-1 md:grid-cols-2 mb-4">
     {{-- Totaal klanten --}}
-    <div class="p-3 md:p-6 bg-white rounded-3xl border">
+    <div class="p-4 md:p-6 bg-white rounded-3xl border">
         <div class="text-sm text-black font-semibold opacity-50 mb-1">Totaal klanten</div>
         <div class="text-3xl font-bold text-[#c8ab7a] mb-2">
             {{ number_format($totalClients, 0, ',', '.') }}
@@ -61,7 +61,7 @@
     </div>
 
     {{-- Totale omzet uit payments.amount --}}
-    <div class="p-3 md:p-6 bg-white rounded-3xl border">
+    <div class="p-4 md:p-6 bg-white rounded-3xl border">
         <div class="text-sm text-black font-semibold opacity-50 mb-1">Totale omzet</div>
 
         <div class="flex items-end justify-between gap-4">
@@ -112,7 +112,7 @@
 </section>
 <div class="grid md:grid-cols-1 gap-4">
     {{-- Threads overzicht --}}
-    <section class="p-3 md:p-6 bg-white rounded-3xl border">
+    <section class="p-4 md:p-6 bg-white rounded-3xl border">
         <div class="flex items-center justify-between mb-3">
             <h2 class="font-semibold">Gesprekken</h2>
             <a href="{{ route('coach.threads.index') }}" class="text-xs opacity-50 hover:opacity-100 transition duration-300 font-semibold">
