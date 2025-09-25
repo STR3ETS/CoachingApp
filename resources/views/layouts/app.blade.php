@@ -25,7 +25,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen max-h-screen overflow-y-hidden flex bg-[#c8ab7a]/10 text-gray-900 antialiased">
+<body class="min-h-[100dvh] max-h-[100dvh] overflow-y-hidden flex bg-[#c8ab7a]/10 text-gray-900 antialiased">
     {{-- Site header / nav --}}
     <header class="bg-[#c8ab7a]">
         <div class="max-w-6xl mx-auto p-1 md:p-3 flex items-center justify-between flex-col">
