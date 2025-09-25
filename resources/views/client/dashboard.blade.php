@@ -13,12 +13,12 @@
 @endphp
 
 @if(!$hasWeighInToday)
-    <div class="mb-12 p-3 rounded-2xl border border-red-200 bg-red-50 text-red-900 flex items-center justify-between">
+    <div class="mb-12 p-3 rounded-2xl border border-red-200 bg-red-50 text-red-900 flex flex-col gap-2 md:gap-0 md:flex-row md:items-center justify-between">
         <div class="text-xs">
             <span class="font-semibold"><i class="fa-solid fa-circle-exclamation"></i>&nbsp;&nbsp;Reminder:</span> Vergeet niet je weigh-in te doen vandaag!
         </div>
         <a href="{{ request()->fullUrlWithQuery(['weigh_in' => 1]) }}"
-           class="px-3 py-1.5 text-xs rounded bg-[#000] text-white hover:bg-[#a89067] transition duration-300 font-semibold">
+           class="px-3 py-1.5 text-xs w-fit rounded bg-[#000] text-white hover:bg-[#a89067] transition duration-300 font-semibold">
            Geef je gewicht op
         </a>
     </div>
@@ -121,7 +121,7 @@
     }
 @endphp
 <h2 class="text-lg font-bold mb-2">Informatie</h2>
-<section class="grid gap-4 grid-cols-2">
+<section class="grid gap-4 grid-cols-1 md:grid-cols-2">
     {{-- Huidig gewicht --}}
     <div class="p-6 bg-white rounded-3xl border">
         <div class="text-sm text-black font-semibold opacity-50 mb-1">Huidig gewicht</div>
@@ -336,7 +336,7 @@
                         ->keyBy('session_index');
                 @endphp
                 @if(count($sessions))
-                    <ul class="grid grid-cols-2 gap-4">
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         @foreach($sessions as $s)
                             @php $ex = is_array($s['exercises'] ?? null) ? $s['exercises'] : []; @endphp
                             <li class="p-4 bg-gray-50 border rounded-xl">

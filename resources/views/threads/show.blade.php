@@ -2,7 +2,7 @@
 @section('title','Gesprek #'.$thread->id)
 
 @section('content')
-<div class="flex gap-8">
+<div class="flex flex-col md:flex-row gap-4">
     @if($role === 'client')
         @php
             $client  = optional(auth()->user())->client;

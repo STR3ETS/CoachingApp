@@ -48,7 +48,7 @@
     $currency     = '€';
     $asOf         = Carbon::now()->format('d-m-Y');
 @endphp
-<section class="grid gap-4 grid-cols-2 mb-4">
+<section class="grid gap-4 grid-cols-1 md:grid-cols-2 mb-4">
     {{-- Totaal klanten --}}
     <div class="p-6 bg-white rounded-3xl border">
         <div class="text-sm text-black font-semibold opacity-50 mb-1">Totaal klanten</div>
