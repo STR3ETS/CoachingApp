@@ -25,12 +25,12 @@
         }
     </style>
 </head>
-<body class="min-h-full flex bg-[#c8ab7a]/10 text-gray-900 antialiased">
+<body class="min-h-screen overflow-y-hidden flex bg-[#c8ab7a]/10 text-gray-900 antialiased">
     {{-- Site header / nav --}}
     <header class="bg-[#c8ab7a]">
-        <div class="max-w-6xl mx-auto p-3 flex items-center justify-between flex-col">
+        <div class="max-w-6xl mx-auto p-1 md:p-3 flex items-center justify-between flex-col">
             <a href="{{ route('landing') }}" class="flex items-center gap-2 font-semibold tracking-tight mb-10">
-                <img class="max-w-[2rem]" src="/assets/2befit-logo.png" alt="Logo">
+                <img class="max-w-[1rem] md:max-w-[2rem] mt-2 md:mt-0" src="/assets/2befit-logo.png" alt="Logo">
             </a>
 
             <nav class="flex flex-col items-center gap-2 text-sm">
@@ -49,12 +49,6 @@
                             <i class="fa-solid fa-ban text-gray-900 group-hover:text-[#fff] transition duration-300"></i>
                             <span class="absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
                                 Ongeclaimde klanten
-                            </span>
-                        </a>
-                        <a href="{{ url('/coach/plans') }}" class="relative w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
-                            <i class="fa-solid fa-clipboard-user text-gray-900 group-hover:text-[#fff] transition duration-300"></i>
-                            <span class="absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
-                                Trainingsplannen
                             </span>
                         </a>
                         <a href="{{ url('/coach/threads') }}" class="relative w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
