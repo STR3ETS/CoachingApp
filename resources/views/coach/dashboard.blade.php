@@ -148,7 +148,7 @@
     </section>
 
     {{-- Mijn clients --}}
-    <aside class="p-3 md:p-6 bg-white rounded-3xl border">
+    <aside class="p-4 md:p-6 bg-white rounded-3xl border">
         <div class="flex items-center justify-between mb-3">
             <h2 class="font-semibold">Jouw klanten</h2>
             <a href="{{ route('coach.clients.unassigned') }}" class="text-xs opacity-50 hover:opacity-100 transition duration-300 font-semibold">
