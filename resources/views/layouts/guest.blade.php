@@ -15,7 +15,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-[#c8ab7a]/10">
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 px-[1.5rem] bg-[#c8ab7a]/10">
             <div>
                 <a href="/">
                     <img class="max-w-[10rem] mb-8" src="/assets/logo-2befit-teamverhoeven.webp" alt="Logo">
