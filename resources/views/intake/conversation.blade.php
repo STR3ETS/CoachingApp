@@ -25,9 +25,9 @@
             <div class="-left-3 w-10 h-10 border-2 border-[#f9f6f1] rounded-full bg-black bg-cover bg-top relative bg-[url(https://cdn6.site-media.eu/images/576%2C1160x772%2B150%2B121/18694504/coachEline-DVsTZnUZ-eQ_EWm1zNyfww.webp)]"></div>
             <div class="-left-6 w-10 h-10 border-2 border-[#f9f6f1] rounded-full bg-black bg-cover bg-top relative bg-[url(https://cdn6.site-media.eu/images/576%2C1160x772%2B134%2B41/18694509/coachRoy-LCXiB9ufGNk2uXEnykijBA.webp)]"></div>
         </div>
-        <div class="bg-white h-9 px-4 rounded-xl flex items-center relative -ml-2 scale-[0.9] md:scale-[1]">
+        <div class="bg-white h-9 px-4 rounded-xl flex items-center relative -ml-2">
             <div class="w-4 h-4 rotate-[45deg] rounded-sm absolute -left-1 bg-white"></div>
-            <p class="italic text-[10px] leading-tighter font-semibold">"Leuk je te zien! Klaar om te knallen? 🔥"</p>
+            <p class="italic text-[10px] leading-[1] md:leading-tighter font-semibold">"Leuk je te zien! Klaar om te knallen? 🔥"</p>
         </div>
     </h1>
     <h2 class="text-xl font-bold mb-2">
