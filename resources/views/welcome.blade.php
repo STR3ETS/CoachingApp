@@ -3,7 +3,7 @@
 @section('content')
 <div class="flex flex-col md:items-center">
     <img class="fade-up max-w-[7rem] md:max-w-[10rem] mb-8" src="/assets/logo-2befit-teamverhoeven.webp" alt="Logo">
-    <div class="fade-up w-full aspect-[1/1.75] md:aspect-[2/1] relative rounded-3xl overflow-hidden">
+    <div class="fade-up w-full h-[795px] md:h-auto md:aspect-[2/1] relative rounded-3xl overflow-hidden">
         <video class="rounded-3xl w-full h-full absolute z-1 object-cover" autoplay loop muted playsinline src="/assets/2befit-promo-horizontal.mp4"></video>
         <div class="w-full h-full p-8 absolute z-2 bg-black/25 flex flex-col gap-6">
             <h1 class="text-6xl text-white font-black">GET IN<br>SHAPE!<br>WORKOUT.</h1>
