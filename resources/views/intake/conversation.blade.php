@@ -144,7 +144,7 @@
 
                 {{-- Coach voorkeur (cards) --}}
                 <template x-if="inputType(currentStep()) === 'coach_preference'">
-                    <div class="grid grid-cols-3 gap-3">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <!-- Eline -->
                         <button type="button"
                                 @click="answer='eline'"
@@ -193,7 +193,7 @@
                         <!-- Geen voorkeur -->
                         <button type="button"
                                 @click="answer='none'"
-                                class="group col-span-3 relative overflow-hidden rounded-2xl border bg-white p-2 text-left transition"
+                                class="group md:col-span-3 relative overflow-hidden rounded-2xl border bg-white p-2 text-left transition"
                                 :class="answer==='none' ? 'border-[#c8ab7a] ring-2 ring-[#c8ab7a]/30' : 'border-gray-200 hover:border-gray-300'">
                             <div class="h-28 w-full rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 grid place-items-center">
                                 <i class="fa-regular fa-user text-3xl text-gray-400"></i>
