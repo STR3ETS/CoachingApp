@@ -61,7 +61,7 @@ class IntakeController extends Controller
         ]);
 
         // Bewaar id in de sessie voor vervolgrequests
-        $request->session()->put('intake_id', $intake->id);
+        $request->session()->put('intake_access_id', $intake->id);
 
         return view('intake.conversation', [
             'intake' => $intake,
@@ -171,25 +171,59 @@ class IntakeController extends Controller
             $payload[$step] = $value;
             $intake->payload = $payload;
 
-            // Complete-check
-            $intake->is_complete = collect($this->requiredForComplete)->every(function($k) use ($payload) {
-                switch ($k) {
-                    case 'email':
-                        return isset($payload['email']) && filter_var($payload['email'], FILTER_VALIDATE_EMAIL);
-                    case 'goals':
-                        return isset($payload['goals']) && is_array($payload['goals']) && count($payload['goals']) > 0;
-                    case 'period_weeks':
-                        $pw = isset($payload['period_weeks']) ? (int)$payload['period_weeks'] : 12; // << default 12
-                        return in_array($pw, [12, 24], true);
-                    case 'frequency':
-                        $f = $payload['frequency'] ?? null;
-                        return is_array($f)
-                            && (int)($f['sessions_per_week'] ?? 0) > 0
-                            && (int)($f['minutes_per_session'] ?? 0) > 0;
-                    default:
-                        return isset($payload[$k]) && $payload[$k] !== null && $payload[$k] !== '';
+            // === Normalisatie ===
+            if (in_array($step, ['goals','injuries'], true)) {
+                if (is_string($value)) {
+                    $value = collect(explode(',', $value))
+                        ->map(fn($s)=>trim($s))->filter()->values()->all();
                 }
-            });
+                $value = is_array($value) ? array_values(array_filter($value)) : [];
+            }
+            if ($step === 'period_weeks') {
+                $iv = (int) $value;
+                $value = in_array($iv, [12, 24], true) ? $iv : 12; // default 12
+            }
+            if ($step === 'height_cm')  { $value = $value !== null ? (int)$value  : null; }
+            if ($step === 'weight_kg')  { $value = $value !== null ? (float)$value: null; }
+            if (in_array($step, ['frequency','heartrate','test_12min','test_5k'], true)) {
+                if (!is_array($value)) $value = null;
+            }
+
+            // ✅ Coach preference normaliseren
+            if ($step === 'coach_preference') {
+                $allowedCoaches = ['eline','nicky','roy','none'];
+                $value = is_string($value) ? strtolower(trim($value)) : 'none';
+                if (!in_array($value, $allowedCoaches, true)) {
+                    $value = 'none';
+                }
+            }
+
+// === Complete-check: alle verplichte velden moeten OK zijn,
+// én we zitten nu op de allerlaatste stap in de flow ===
+$requiredOk = collect($this->requiredForComplete)->every(function($k) use ($payload) {
+    switch ($k) {
+        case 'email':
+            return isset($payload['email']) && filter_var($payload['email'], FILTER_VALIDATE_EMAIL);
+        case 'goals':
+            return isset($payload['goals']) && is_array($payload['goals']) && count($payload['goals']) > 0;
+        case 'period_weeks':
+            $pw = isset($payload['period_weeks']) ? (int)$payload['period_weeks'] : 12;
+            return in_array($pw, [12, 24], true);
+        case 'frequency':
+            $f = $payload['frequency'] ?? null;
+            return is_array($f)
+                && (int)($f['sessions_per_week'] ?? 0) > 0
+                && (int)($f['minutes_per_session'] ?? 0) > 0;
+        default:
+            return isset($payload[$k]) && $payload[$k] !== null && $payload[$k] !== '';
+    }
+});
+
+$lastStep  = $this->steps[\array_key_last($this->steps)];
+$isLastNow = ($step === $lastStep);
+
+// ✅ Alleen complete wanneer required velden kloppen én je nu op de laatste stap bent
+$intake->is_complete = $requiredOk && $isLastNow;
 
             $intake->save();
 
@@ -295,9 +329,6 @@ class IntakeController extends Controller
                             'user_id'   => $user->id,
                         ]);
                     }
-
-                    \Illuminate\Support\Facades\Auth::login($user);
-                    \Log::info('Intake.storeStep: user logged in', ['user_id' => $user->id]);
                 }
             }
 

@@ -52,8 +52,6 @@
                     Bewerken
                 </a>
             @endif
-            <button onclick="window.print()" class="px-3 py-1.5 text-xs rounded bg-black text-white font-semibold">Print</button>
-            <a href="{{ url()->current() }}?format=json" class="px-3 py-1.5 text-xs rounded bg-black text-white font-semibold">Download JSON</a>
         </div>
     </div>
 

@@ -40,7 +40,7 @@ class CoachPlanController extends Controller
         $data = $request->validate([
             'client_id' => ['required','exists:clients,id'],
             'title'     => ['required','string','max:120'],
-            'weeks'     => ['required','integer','min:4','max:52'],
+            'weeks'     => ['required','integer','min:1','max:52'],
             'plan_json' => ['required'], // <-- string i.p.v. array
             'is_final'  => ['nullable','boolean'],
         ]);
@@ -108,7 +108,7 @@ class CoachPlanController extends Controller
 
         $data = $request->validate([
             'title'     => ['required','string','max:120'],
-            'weeks'     => ['required','integer','min:4','max:52'],
+            'weeks'     => ['required','integer','min:1','max:52'],
             'plan_json' => ['required'], // hidden JSON string
             'is_final'  => ['nullable','boolean'],
         ]);

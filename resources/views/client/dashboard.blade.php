@@ -212,43 +212,55 @@
 <div x-data="{ openWeighIn: {{ ($errors->any() || request()->boolean('weigh_in')) ? 'true' : 'false' }} }">
     <div x-show="openWeighIn"
          x-transition.opacity
-         class="fixed inset-0 z-50 flex items-center justify-center"
+         class="fixed inset-0 z-50 flex items-center justify-center px-[1.5rem]"
          aria-modal="true" role="dialog">
         {{-- backdrop --}}
         <div class="absolute inset-0 bg-black/40" @click="openWeighIn = false"></div>
 
         {{-- panel --}}
         <div x-transition
-             class="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-xl border">
-            <div class="px-5 py-4 border-b flex items-center justify-between">
-                <h3 class="font-semibold">Nieuwe weging</h3>
-                <button class="text-gray-500 hover:text-gray-800"
-                        @click="openWeighIn = false"
-                        aria-label="Sluiten">✕</button>
+             class="relative z-10 w-full max-w-lg bg-white rounded-3xl p-6">
+            <div class="border-b flex items-center justify-between">
+                <div class="max-w-[70%] pb-6">
+                    <h3 class="font-bold">Nieuwe weging</h3>
+                    <p class="text-sm text-black opacity-80 font-medium">Je staat op het punt om een nieuwe weging in te voeren.</p>
+                </div>
+    <button class="text-gray-500 hover:text-gray-800 absolute right-5 top-3" @click="openWeighIn=false" aria-label="Sluiten">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
             </div>
 
-            <form method="POST" action="{{ route('client.weighins.store') }}" class="p-5 space-y-3">
+            <form method="POST" action="{{ route('client.weighins.store') }}" class="pt-3 space-y-3">
                 @csrf
                 <div>
-                    <label class="block text-xs text-gray-600 mb-1">Datum</label>
+                    <label class="block text-xs text-black mb-1 font-semibold">Datum</label>
                     <input type="date" name="date"
-                           class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#c8ab7a]"
+                           class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                p-3
+                focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                focus:border-[#c8ab7a] text-sm"
                            value="{{ old('date', now()->toDateString()) }}">
                 </div>
 
                 <div>
-                    <label class="block text-xs text-gray-600 mb-1">Gewicht (kg)</label>
+                    <label class="block text-xs text-black mb-1 font-semibold">Gewicht (kg)</label>
                     <input type="number" step="0.1" min="20" max="400"
                            name="weight_kg"
-                           class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#c8ab7a]"
+                           class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                p-3
+                focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                focus:border-[#c8ab7a] text-sm"
                            placeholder="bijv. 78.5"
                            value="{{ old('weight_kg', $profile->weight_kg) }}">
                 </div>
 
                 <div>
-                    <label class="block text-xs text-gray-600 mb-1">Notitie (optioneel)</label>
+                    <label class="block text-xs text-black mb-1 font-semibold">Notitie (optioneel)</label>
                     <input type="text" name="notes"
-                           class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#c8ab7a]"
+                           class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                p-3
+                focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                focus:border-[#c8ab7a] text-sm"
                            placeholder="bv. ochtend, nuchter"
                            value="{{ old('notes') }}">
                 </div>
@@ -260,14 +272,79 @@
                 @endif
 
                 <div class="pt-2 flex items-center justify-end gap-2">
-                    <button type="button" class="px-3 py-2 border rounded"
+                    <button type="button" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 transition duration-300 text-gray-500 font-medium text-sm rounded"
                             @click="openWeighIn = false">Annuleren</button>
-                    <button class="px-4 py-2 bg-black text-white rounded">Opslaan</button>
+                    <button class="px-6 py-3 bg-[#c8ab7a] hover:bg-[#a38b62] transition duration-300 text-white font-medium text-sm rounded">Opslaan</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+{{-- Training vandaag --}}
+@php
+    $today = \Carbon\Carbon::today()->locale('nl_NL')->dayName;
+
+    $todaySession = null;
+    if(isset($weekData['sessions']) && is_array($weekData['sessions'])) {
+        foreach($weekData['sessions'] as $s) {
+            if(strtolower($s['day'] ?? '') === strtolower($today)) {
+                $todaySession = $s;
+                break;
+            }
+        }
+    }
+@endphp
+
+<section class="md:col-span-3 p-6 bg-white rounded-3xl border mb-4 mt-4">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold">Training vandaag</h2>
+    </div>
+
+    @if($todaySession)
+        <div class="p-4 bg-gray-50 border rounded-xl">
+            <div class="text-sm font-medium mb-2">
+                {{ $todaySession['day'] ?? 'Sessie' }}
+            </div>
+
+            @php $ex = is_array($todaySession['exercises'] ?? null) ? $todaySession['exercises'] : []; @endphp
+            @if($ex)
+                <ul class="space-y-3">
+                    @foreach($ex as $e)
+                        <li class="p-3 rounded-xl border bg-white/90">
+                            <div class="flex items-center justify-between">
+                                <div class="text-sm font-semibold">
+                                    <i class="fa-solid fa-dumbbell mr-2"></i>
+                                    {{ $e['name'] ?? 'Oefening' }}
+                                </div>
+                                <div class="flex gap-2 text-[12px]">
+                                    <span class="px-2 py-0.5 rounded border bg-purple-100 text-purple-500">
+                                        Sets: {{ $e['sets'] ?? '-' }}
+                                    </span>
+                                    <span class="px-2 py-0.5 rounded border bg-orange-100 text-orange-500">
+                                        Reps: {{ $e['reps'] ?? '-' }}
+                                    </span>
+                                    <span class="px-2 py-0.5 rounded border bg-gray-100 text-gray-500">
+                                        RPE: {{ $e['rpe'] ?? '-' }}
+                                    </span>
+                                </div>
+                            </div>
+                            @if(!empty($e['notes']))
+                                <p class="text-xs mt-2 italic text-gray-500">
+                                    "{{ $e['notes'] }}"
+                                </p>
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="text-xs text-gray-500">Geen oefeningen ingepland voor vandaag.</p>
+            @endif
+        </div>
+    @else
+        <p class="text-sm text-gray-500">Vandaag geen training ingepland.</p>
+    @endif
+</section>
 
 <div class="grid md:grid-cols-3 gap-4 mt-4">
     {{-- Training deze week --}}
@@ -469,7 +546,7 @@
 <div x-data="sessionLogModal()" x-on:open-session-log.document="openModal($event.detail)">
   <div x-show="open"
        x-transition.opacity
-       class="fixed inset-0 z-[60] flex items-center justify-center"
+       class="fixed inset-0 z-[60] flex items-center justify-center px-[1.5rem]"
        aria-modal="true" role="dialog">
     <div class="absolute inset-0 bg-black/40" @click="open=false"></div>
 
@@ -508,8 +585,8 @@
         </div>
 
         <div class="pt-2 flex items-center justify-end gap-2">
-          <button type="button" class="px-3 py-2 border rounded" @click="open=false">Annuleren</button>
-          <button class="px-4 py-2 bg-black text-white rounded"
+          <button type="button" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 transition duration-300 text-gray-500 font-medium text-sm rounded" @click="open=false">Annuleren</button>
+          <button class="px-6 py-3 bg-[#c8ab7a] hover:bg-[#a38b62] transition duration-300 text-white font-medium text-sm rounded"
                   x-text="isEdit ? 'Opslaan' : 'Afronden'"></button>
         </div>
       </form>

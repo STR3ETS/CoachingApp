@@ -82,7 +82,7 @@
 
 {{-- Tabs --}}
 <div x-data="{ tab: 'plans' }" class="space-y-4">
-    <div class="flex gap-2">
+    <div class="grid grid-cols-3 md:flex gap-2">
         <button class="px-3 py-1.5 text-xs rounded border" :class="tab==='plans' ? 'bg-black text-white' : ''" @click="tab='plans'">Schema’s</button>
         <button class="px-3 py-1.5 text-xs rounded border" :class="tab==='intake' ? 'bg-black text-white' : ''" @click="tab='intake'">Intake</button>
         <button class="px-3 py-1.5 text-xs rounded border" :class="tab==='threads' ? 'bg-black text-white' : ''" @click="tab='threads'">Gesprekken</button>

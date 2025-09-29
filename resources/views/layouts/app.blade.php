@@ -15,6 +15,9 @@
 
     <script src="https://kit.fontawesome.com/4180a39c11.js" crossorigin="anonymous"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
     {{-- Extra head-injectie per pagina --}}
     @yield('head')
 
@@ -25,82 +28,91 @@
         }
     </style>
 </head>
-<body class="min-h-[100dvh] max-h-[100dvh] overflow-y-hidden flex bg-[#c8ab7a]/10 text-gray-900 antialiased">
+<body class="min-h-[100dvh] max-h-[100dvh] overflow-y-hidden flex flex-col md:flex-row bg-[#c8ab7a]/10 text-gray-900 antialiased">
     {{-- Site header / nav --}}
     <header class="bg-[#c8ab7a]">
-        <div class="max-w-6xl mx-auto p-1 md:p-3 flex items-center justify-between flex-col">
-            <a href="{{ route('landing') }}" class="flex items-center gap-2 font-semibold tracking-tight mb-10">
-                <img class="max-w-[1rem] md:max-w-[2rem] mt-2 md:mt-0" src="/assets/2befit-logo.png" alt="Logo">
+        <div class="max-w-6xl mx-auto p-1 md:p-3 flex items-center justify-between flex-row md:flex-col">
+            <a href="{{ route('landing') }}" class="flex items-center gap-2 font-semibold tracking-tight md:mb-10">
+                <img class="max-w-[1.5rem] md:max-w-[2rem] md:mt-0" src="/assets/2befit-logo.png" alt="Logo">
             </a>
 
-            <nav class="flex flex-col items-center gap-2 text-sm">
+            <nav class="flex flex-row md:flex-col items-center gap-2 text-sm">
                 @php
                     ($role = auth()->user()->role ?? 'client')
                 @endphp
                 @auth
                     @if($role === 'coach')
-                        <a href="{{ url('/coach') }}" class="relative w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
+                        <a href="{{ url('/coach') }}" class="relative px-2 md:px-0 w-fit md:w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
                             <i class="fa-solid fa-house text-gray-900 group-hover:text-[#fff] transition duration-300"></i>
-                            <span class="absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
+                            <p class="block md:hidden text-xs font-semibold ml-2 group-hover:text-white transition duration-300">Overzicht</p>
+                            <span class="hidden md:block absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
                                 Overzicht
                             </span>
                         </a>
-                        <a href="{{ url('/coach/clients/unassigned') }}" class="relative w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
+                        <a href="{{ url('/coach/clients/unassigned') }}" class="relative px-2 md:px-0 w-fit md:w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
                             <i class="fa-solid fa-ban text-gray-900 group-hover:text-[#fff] transition duration-300"></i>
-                            <span class="absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
+                            <p class="block md:hidden text-xs font-semibold ml-2 group-hover:text-white transition duration-300">Ongeclaimt</p>
+                            <span class="hidden md:block absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
                                 Ongeclaimde klanten
                             </span>
                         </a>
-                        <a href="{{ url('/coach/threads') }}" class="relative w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
+                        <a href="{{ url('/coach/threads') }}" class="relative px-2 md:px-0 w-fit md:w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
                             <i class="fa-solid fa-messages text-gray-900 group-hover:text-[#fff] transition duration-300"></i>
-                            <span class="absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
+                            <p class="block md:hidden text-xs font-semibold ml-2 group-hover:text-white transition duration-300">Chatten</p>
+                            <span class="hidden md:block absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
                                 Chat met je klanten
                             </span>
                         </a>
                     @elseif($role === 'client')
-                        <a href="{{ url('/client') }}" class="relative w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
+                        <a href="{{ url('/client') }}" class="relative px-2 md:px-0 w-fit md:w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
                             <i class="fa-solid fa-house text-gray-900 group-hover:text-[#fff] transition duration-300"></i>
-                            <span class="absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
+                            <p class="block md:hidden text-xs font-semibold ml-2 group-hover:text-white transition duration-300">Overzicht</p>
+                            <span class="hidden md:block absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
                                 Overzicht
                             </span>
                         </a>
-                        <a href="{{ url('/client/plan') }}" class="relative w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
+                        <a href="{{ url('/client/plan') }}" class="relative px-2 md:px-0 w-fit md:w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
                             <i class="fa-solid fa-clipboard-user text-gray-900 group-hover:text-[#fff] transition duration-300"></i>
-                            <span class="absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
+                            <p class="block md:hidden text-xs font-semibold ml-2 group-hover:text-white transition duration-300">Planning</p>
+                            <span class="hidden md:block absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
                                 Weekplanning
                             </span>
                         </a>
-                        <a href="{{ url('/client/threads') }}" class="relative w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
+                        <a href="{{ url('/client/threads') }}" class="relative px-2 md:px-0 w-fit md:w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
                             <i class="fa-solid fa-messages text-gray-900 group-hover:text-[#fff] transition duration-300"></i>
-                            <span class="absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
+                            <p class="block md:hidden text-xs font-semibold ml-2 group-hover:text-white transition duration-300">Chatten</p>
+                            <span class="hidden md:block absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
                                 Chat met je coach
                             </span>
                         </a>
-                        <a href="https://www.2befitsupplements.nl" target="_blank" class="relative w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
+                        <a href="https://www.2befitsupplements.nl" target="_blank" class="hidden md:flex relative px-2 md:px-0 w-fit md:w-8 h-8 items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
                             <i class="fa-solid fa-shopping-bag text-gray-900 group-hover:text-[#fff] transition duration-300"></i>
-                            <span class="absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
+                            <p class="block md:hidden text-xs font-semibold ml-2 group-hover:text-white transition duration-300">Supplementen</p>
+                            <span class="hidden md:block absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
                                 Supplementen
                             </span>
                         </a>
                     @endif
                 @endauth
                 @auth
-                    <form class="absolute bottom-3" method="POST" action="{{ route('logout') }}">
+                    <form class="absolute left-8 md:left-auto md:bottom-3" method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button class="w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg group">
                             <i class="fa-solid fa-right-from-bracket text-gray-900 group-hover:text-[#fff] transition duration-300"></i>
                         </button>
                     </form>
                 @else
-                    <a href="{{ route('intake.start') }}" class="relative w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
+                    <a href="{{ route('intake.start') }}" class="relative px-2 md:px-0 w-fit md:w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
                         <i class="fa-solid fa-bolt text-gray-900 group-hover:text-[#fff] transition duration-300"></i>
-                        <span class="absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
+                        <p class="block md:hidden text-xs font-semibold ml-2 group-hover:text-white transition duration-300">Intake</p>
+                        <span class="hidden md:block absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
                             Intakeformulier
                         </span>
                     </a>
-                    <a href="{{ route('login') }}" class="relative w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
+                    <a href="{{ route('login') }}" class="relative px-2 md:px-0 w-fit md:w-8 h-8 flex items-center justify-center transition duration-300 rounded-lg hover:bg-[#947d57] group">
                         <i class="fa-solid fa-right-to-bracket text-gray-900 group-hover:text-[#fff] transition duration-300"></i>
-                        <span class="absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
+                        <p class="block md:hidden text-xs font-semibold ml-2 group-hover:text-white transition duration-300">Inloggen</p>
+                        <span class="hidden md:block absolute left-full ml-2 px-2 py-1 text-xs rounded-lg bg-white border border-[#d1d1d1] text-gray-900 opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap">
                             Inloggen
                         </span>
                     </a>
@@ -140,6 +152,26 @@
     </div>
 
     {{-- Pagina-specifieke scripts --}}
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.utils.toArray(".fade-up").forEach((el) => {
+            gsap.fromTo(el,
+            { y: 50, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                trigger: el,
+                start: "top 80%", // wanneer element in beeld komt
+                toggleActions: "play none none reverse", 
+                }
+            }
+            );
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>

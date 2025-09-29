@@ -18,13 +18,19 @@
     <div class="grid md:grid-cols-3 gap-4 mb-6">
         <div class="md:col-span-2">
             <label class="block text-sm mb-1">Titel</label>
-            <input x-model="title" name="title" class="w-full border rounded px-3 py-2"
+            <input x-model="title" name="title" class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                        p-3
+                        focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                        focus:border-[#c8ab7a] text-sm"
                   placeholder="Hyrox schema">
         </div>
         <div>
             <label class="block text-sm mb-1">Aantal weken</label>
-            <input x-model.number="weeks" type="number" name="weeks" min="4" max="52"
-                   class="w-full border rounded px-3 py-2">
+            <input x-model.number="weeks" type="number" name="weeks" min="1" max="52"
+                   class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                        p-3
+                        focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                        focus:border-[#c8ab7a] text-sm">
             <p class="text-xs text-gray-500 mt-1">Wijzig het aantal weken om secties toe te voegen/verwijderen.</p>
         </div>
     </div>
@@ -32,16 +38,16 @@
 {{-- Alle weken onder elkaar --}}
 <div class="space-y-8">
   <template x-for="w in weeksArray()" :key="w">
-    <section class="p-4 bg-white rounded border">
+    <section class="p-5 bg-white rounded-3xl border">
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-semibold">Week <span x-text="w"></span></h2>
-        <div class="flex items-center gap-2">
-          <button type="button" class="text-sm underline"
+        <div class="flex items-center gap-6">
+          <button type="button" class="text-xs opacity-50 hover:opacity-100 transition duration-300 font-semibold"
                   @click="generateWeek(w)" x-bind:disabled="loading[w]">
             <span x-show="!loading[w]">Genereer week</span>
             <span x-show="loading[w]">Genereert…</span>
           </button>
-          <button type="button" class="text-xs px-2 py-1 border rounded"
+          <button type="button" class="text-xs opacity-50 hover:opacity-100 transition duration-300 font-semibold"
                   @click="clearWeek(w)">Leeg week</button>
         </div>
       </div>
@@ -49,7 +55,10 @@
       {{-- Focus --}}
       <div class="mt-3">
         <label class="block text-sm mb-1">Focus</label>
-        <input class="w-full border rounded px-3 py-2"
+        <input class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                        p-3
+                        focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                        focus:border-[#c8ab7a] text-sm"
                :name="`focus_week_${w}`"
                x-model="plan[`week_${w}`].focus"
                placeholder="Bijv. Basiskracht + aerobe duur">
@@ -85,40 +94,58 @@
               <template x-for="(row, idx) in flatRows(w)" :key="idx">
                 <tr class="border-t">
                   <td class="p-2">
-                    <select class="border rounded px-2 py-1 w-full"
+                    <select class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                        p-3
+                        focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                        focus:border-[#c8ab7a] text-sm"
                             x-model="row.day"
                             @change="saveFlatRow(w, idx, row)">
-                      <option :value="''" disabled :selected="!row.day">— kies dag —</option>
+                      <option :value="''" disabled :selected="!row.day">Kies dag</option>
                       <template x-for="d in days" :key="d">
                         <option :value="d" :selected="row.day === d" x-text="d"></option>
                       </template>
                     </select>
                   </td>
                   <td class="p-2">
-                    <input class="border rounded px-2 py-1 w-full"
+                    <input class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                        p-3
+                        focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                        focus:border-[#c8ab7a] text-sm"
                            placeholder="Bijv. Sled push"
                            x-model="row.name"
                            @input="saveFlatRow(w, idx, row)">
                   </td>
                   <td class="p-2">
-                    <input type="number" class="border rounded px-2 py-1 w-full"
+                    <input type="number" class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                        p-3
+                        focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                        focus:border-[#c8ab7a] text-sm"
                            x-model.number="row.sets"
                            @input="saveFlatRow(w, idx, row)">
                   </td>
                   <td class="p-2">
-                    <input class="border rounded px-2 py-1 w-full"
+                    <input class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                        p-3
+                        focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                        focus:border-[#c8ab7a] text-sm"
                            placeholder="8-10"
                            x-model="row.reps"
                            @input="saveFlatRow(w, idx, row)">
                   </td>
                   <td class="p-2">
-                    <input class="border rounded px-2 py-1 w-full"
+                    <input class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                        p-3
+                        focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                        focus:border-[#c8ab7a] text-sm"
                            placeholder="7"
                            x-model="row.rpe"
                            @input="saveFlatRow(w, idx, row)">
                   </td>
                   <td class="p-2">
-                    <input class="border rounded px-2 py-1 w-full"
+                    <input class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                        p-3
+                        focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                        focus:border-[#c8ab7a] text-sm"
                           placeholder="bv. tempo, cues"
                           x-model="row.notes"
                           @input="saveFlatRow(w, idx, row)">
@@ -142,7 +169,10 @@
                   Notitie voor sessie: <span class="font-semibold" x-text="d"></span>
                 </label>
                 <textarea
-                  class="w-full border rounded px-3 py-2"
+                  class="w-full rounded-xl border-[#ededed] hover:border-[#c7c7c7] transition duration-300
+                        p-3
+                        focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+                        focus:border-[#c8ab7a] text-sm"
                   rows="2"
                   x-model="sessionNotes[w][d]"
                   @input="setSessionNote(w, d, sessionNotes[w][d])"
@@ -161,14 +191,9 @@
     {{-- Hidden JSON output --}}
     <input type="hidden" name="plan_json" :value="serializedPlan()">
 
-    <label class="inline-flex items-center gap-2 mt-6 block">
-        <input type="checkbox" name="is_final" value="1" {{ $plan->is_final ? 'checked' : '' }}>
-        <span class="text-sm">Markeer als definitief</span>
-    </label>
-
     <div class="mt-6 flex gap-3">
-        <button class="px-4 py-2 bg-black text-white rounded">Opslaan</button>
-        <a href="{{ route('coach.plans.show', $plan) }}" class="px-4 py-2 border rounded">Annuleren</a>
+        <button class="px-6 py-3 bg-[#c8ab7a] hover:bg-[#a38b62] transition duration-300 text-white font-medium text-sm rounded">Opslaan</button>
+        <a href="{{ route('coach.plans.show', $plan) }}" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 transition duration-300 text-gray-500 font-medium text-sm rounded">Annuleren</a>
     </div>
 </form>
 @endsection

@@ -14,11 +14,11 @@
     $btnGhost    = 'text-xs opacity-50 hover:opacity-100 transition duration-300 font-semibold';
 @endphp
 
-<div
-    x-data="intakeFlow({{ $intake->id }}, {{ json_encode($steps) }})"
-    x-init="init()"
-    class="max-w-xl mx-auto p-6"
->
+    <div
+        x-data="intakeFlow({{ $intake->id }}, {{ json_encode($steps) }})"
+        x-init="init()"
+        class="max-w-xl mx-auto p-6"
+    >
     <h1 class="text-2xl font-bold mb-2 flex items-center">
         <div class="flex">
             <div class="w-10 h-10 border-2 border-[#f9f6f1] rounded-full bg-black bg-cover bg-top relative bg-[url(https://cdn6.site-media.eu/images/640%2C1160x772%2B130%2B112/18694492/coachNicky-MjbAPBl6Pr1a23o9d6zbqA.webp)]"></div>
@@ -49,7 +49,7 @@
             </div>
 
             {{-- card --}}
-            <div class="{{ $cardClass }}">
+            <div class="{{ $cardClass }}" x-show="currentStep()">
                 <div class="mb-1 font-semibold text-[15px] flex items-center gap-1">
                     <span x-html="labelFor(currentStep())"></span>
                     <span x-show="!isOptional(currentStep())" class="text-black">*</span>
@@ -139,6 +139,72 @@
                             <label class="text-xs text-gray-600 mb-1 block">Seconden</label>
                             <input x-model.number="t5k.seconds" type="number" min="0" max="59" class="{{ $inputClass }}" placeholder="30">
                         </div>
+                    </div>
+                </template>
+
+                {{-- Coach voorkeur (cards) --}}
+                <template x-if="inputType(currentStep()) === 'coach_preference'">
+                    <div class="grid grid-cols-3 gap-3">
+                        <!-- Eline -->
+                        <button type="button"
+                                @click="answer='eline'"
+                                class="group relative overflow-hidden rounded-2xl border bg-white p-2 text-left transition"
+                                :class="answer==='eline' ? 'border-[#c8ab7a] ring-2 ring-[#c8ab7a]/30' : 'border-gray-200 hover:border-gray-300'">
+                            <div class="w-full">
+                                <img src="/assets/eline.webp" alt="Eline">
+                            </div>
+                            <div class="mt-4 px-2 pb-2 flex items-center justify-between">
+                                <span class="font-semibold">Eline</span>
+                                <i class="fa-solid fa-circle-check"
+                                :class="answer==='eline' ? 'text-[#c8ab7a]' : 'text-gray-300'"></i>
+                            </div>
+                        </button>
+
+                        <!-- Nicky -->
+                        <button type="button"
+                                @click="answer='nicky'"
+                                class="group relative overflow-hidden rounded-2xl border bg-white p-2 text-left transition"
+                                :class="answer==='nicky' ? 'border-[#c8ab7a] ring-2 ring-[#c8ab7a]/30' : 'border-gray-200 hover:border-gray-300'">
+                            <div class="w-full">
+                                <img src="/assets/nicky.webp" alt="Eline">
+                            </div>
+                            <div class="mt-4 px-2 pb-2 flex items-center justify-between">
+                                <span class="font-semibold">Nicky</span>
+                                <i class="fa-solid fa-circle-check"
+                                :class="answer==='nicky' ? 'text-[#c8ab7a]' : 'text-gray-300'"></i>
+                            </div>
+                        </button>
+
+                        <!-- Roy -->
+                        <button type="button"
+                                @click="answer='roy'"
+                                class="group relative overflow-hidden rounded-2xl border bg-white p-2 text-left transition"
+                                :class="answer==='roy' ? 'border-[#c8ab7a] ring-2 ring-[#c8ab7a]/30' : 'border-gray-200 hover:border-gray-300'">
+                            <div class="w-full">
+                                <img src="/assets/roy.webp" alt="Eline">
+                            </div>
+                            <div class="mt-4 px-2 pb-2 flex items-center justify-between">
+                                <span class="font-semibold">Roy</span>
+                                <i class="fa-solid fa-circle-check"
+                                :class="answer==='roy' ? 'text-[#c8ab7a]' : 'text-gray-300'"></i>
+                            </div>
+                        </button>
+
+                        <!-- Geen voorkeur -->
+                        <button type="button"
+                                @click="answer='none'"
+                                class="group col-span-3 relative overflow-hidden rounded-2xl border bg-white p-2 text-left transition"
+                                :class="answer==='none' ? 'border-[#c8ab7a] ring-2 ring-[#c8ab7a]/30' : 'border-gray-200 hover:border-gray-300'">
+                            <div class="h-28 w-full rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 grid place-items-center">
+                                <i class="fa-regular fa-user text-3xl text-gray-400"></i>
+                            </div>
+                            <div class="mt-2 px-2 pb-2 flex items-center justify-between">
+                                <span class="font-semibold">Geen voorkeur</span>
+                                <i class="fa-solid fa-circle-check"
+                                :class="answer==='none' ? 'text-[#c8ab7a]' : 'text-gray-300'"></i>
+                            </div>
+                            <p class="text-xs text-black/60">Wij matchen je met de beste coach</p>
+                        </button>
                     </div>
                 </template>
 
@@ -248,11 +314,20 @@
 <script>
 function intakeFlow(intakeId, steps){
     return {
-        intakeId, steps, stepIndex: 0, complete: false, loading:false, error:'', optionalSteps: new Set([
-  'address','background','facilities','materials','work_hours',
-  'injuries','test_12min','test_5k','coach_preference'
-]),
-        // models
+        // props
+        intakeId, steps,
+
+        // state
+        stepIndex: 0,
+        complete: false,
+        loading:false,
+        error:'',
+        optionalSteps: new Set([
+            'address','background','facilities','materials','work_hours',
+            'injuries','test_12min','test_5k','coach_preference'
+        ]),
+
+        // models (werden al gebruikt door je UI)
         answer: '',
         tagsInput: '',
         freq: { sessions_per_week: null, minutes_per_session: null },
@@ -260,16 +335,86 @@ function intakeFlow(intakeId, steps){
         t12:  { meters: null },
         t5k:  { minutes: null, seconds: null },
 
-        init(){
-            this.watchStep();
+        // ---------- LocalStorage helpers ----------
+        storageKey(){ return `intake:${this.intakeId}`; },
+
+        saveDraft(){
+            const draft = {
+                stepIndex: this.stepIndex,
+                answer: this.answer,
+                tagsInput: this.tagsInput,
+                freq: this.freq,
+                hr: this.hr,
+                t12: this.t12,
+                t5k: this.t5k,
+                ts: Date.now(),
+            };
+            try { localStorage.setItem(this.storageKey(), JSON.stringify(draft)); } catch(e){}
         },
 
-        currentStep(){ return this.steps[this.stepIndex]; },
-        isLast(){ return this.stepIndex >= this.steps.length - 1; },
-        isOptional(step){ 
-        return this.optionalSteps.has(step); 
+        loadDraft(){
+            try{
+                const raw = localStorage.getItem(this.storageKey());
+                if (!raw) return false;
+                const d = JSON.parse(raw);
+                if (!d || typeof d !== 'object') return false;
+
+                // herstel state
+                this.stepIndex = Number.isInteger(d.stepIndex) ? d.stepIndex : 0;
+                this.answer    = d.answer ?? '';
+                this.tagsInput = d.tagsInput ?? '';
+                this.freq      = d.freq ?? { sessions_per_week: null, minutes_per_session: null };
+                this.hr        = d.hr   ?? { resting: null, max: null };
+                this.t12       = d.t12  ?? { meters: null };
+                this.t5k       = d.t5k  ?? { minutes: null, seconds: null };
+                return true;
+            } catch(e){ return false; }
         },
+
+        clearDraft(){
+            try { localStorage.removeItem(this.storageKey()); } catch(e){}
+        },
+
+        // ---------- Lifecycle ----------
+        init(){
+            // 1) Probeer draft te laden
+            const hadDraft = this.loadDraft();
+
+            // 2) Safety: clamp stepIndex
+            if (!Array.isArray(this.steps) || this.steps.length === 0){
+                this.complete = true;
+            } else {
+                if (!Number.isInteger(this.stepIndex) || this.stepIndex < 0) this.stepIndex = 0;
+                if (this.stepIndex > this.steps.length - 1) this.stepIndex = 0;
+            }
+
+            // 3) Defaults voor huidige stap
+            this.watchStep();
+
+            // 4) Autosave bij relevante wijzigingen
+            this.$watch('stepIndex', () => this.saveDraft());
+            this.$watch('answer',    () => this.saveDraft());
+            this.$watch('tagsInput', () => this.saveDraft());
+            this.$watch(() => JSON.stringify(this.freq), () => this.saveDraft());
+            this.$watch(() => JSON.stringify(this.hr),   () => this.saveDraft());
+            this.$watch(() => JSON.stringify(this.t12),  () => this.saveDraft());
+            this.$watch(() => JSON.stringify(this.t5k),  () => this.saveDraft());
+
+            // 5) Extra safety
+            window.addEventListener('beforeunload', () => this.saveDraft());
+        },
+
+        // ---------- Step helpers ----------
+        currentStep(){
+            if (!Array.isArray(this.steps) || this.steps.length === 0) return null;
+            if (this.stepIndex < 0 || this.stepIndex > this.steps.length - 1) return null;
+            return this.steps[this.stepIndex] ?? null;
+        },
+        isLast(){ return this.stepIndex >= this.steps.length - 1; },
+        isOptional(step){ return this.optionalSteps.has(step); },
+
         resetFields(){
+            // reset alleen field-state (niet de stepIndex)
             this.answer=''; this.tagsInput='';
             this.freq={sessions_per_week:null, minutes_per_session:null};
             this.hr={resting:null, max:null};
@@ -285,9 +430,14 @@ function intakeFlow(intakeId, steps){
             if (s === 'frequency' && (!this.freq || typeof this.freq !== 'object')) {
                 this.freq = { sessions_per_week: null, minutes_per_session: null };
             }
+            if (s === 'coach_preference' && !this.answer) {
+                this.answer = 'none'; // standaard 'Geen voorkeur'
+            }
         },
 
+        // ---------- UI meta ----------
         inputType(key){
+            if (!key) return 'text';
             if (key === 'email') return 'email';
             if (key === 'birthdate') return 'date';
             if (['height_cm','weight_kg'].includes(key)) return 'number';
@@ -295,10 +445,12 @@ function intakeFlow(intakeId, steps){
             if (['background','facilities','materials','work_hours'].includes(key)) return 'textarea';
             if (['goals','injuries'].includes(key)) return 'tags';
             if (['frequency','heartrate','test_12min','test_5k'].includes(key)) return key;
+            if (key === 'coach_preference') return 'coach_preference';
             return 'text';
         },
 
         labelFor(key){
+            if (!key) return '';
             const labels = {
                 name:'Wat is je naam?', email:'Wat is je e-mail?',
                 birthdate:'Wat is je geboortedatum?', address:'Wat is je adres?<span class="opacity-50 text-[10px] ml-2">OPTIONEEL</span>', gender:'Wat is je geslacht?',
@@ -328,8 +480,7 @@ function intakeFlow(intakeId, steps){
                 {value:'',label:'-'},{value:'m',label:'Man'},{value:'f',label:'Vrouw'}
             ];
             if (key === 'period_weeks') return [
-                {value:12,label:'12 weken'},
-                {value:24,label:'24 weken'}
+                {value:12,label:'12 weken'},{value:24,label:'24 weken'}
             ];
             return [];
         },
@@ -364,7 +515,6 @@ function intakeFlow(intakeId, steps){
             return this.answer ?? null;
         },
 
-        // ✅ TOEVOEGEN
         validateCurrentStep(){
             const step = this.currentStep();
             if (this.isOptional(step)) return true;
@@ -376,12 +526,7 @@ function intakeFlow(intakeId, steps){
                 (Array.isArray(v) && v.length === 0) ||
                 (typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length === 0);
 
-            if (isEmpty(val)){
-                this.error = 'Dit veld is verplicht.';
-                return false;
-            }
-
-            // specifieke checks
+            if (isEmpty(val)){ this.error = 'Dit veld is verplicht.'; return false; }
             if (step === 'email'){
                 const re = /^\S+@\S+\.\S+$/;
                 if (!re.test(val)){ this.error = 'Vul een geldig e-mailadres in.'; return false; }
@@ -397,15 +542,16 @@ function intakeFlow(intakeId, steps){
             }
             if (step === 'frequency'){
                 if (!val || !val.sessions_per_week || !val.minutes_per_session){
-                this.error = 'Vul beide frequentievelden in.'; return false;
+                    this.error = 'Vul beide frequentievelden in.'; return false;
                 }
             }
             return true;
         },
 
+        // ---------- Actions ----------
         async submitStep(){
             this.error='';
-            if (!this.validateCurrentStep()) return;   // ✅ NIEUW
+            if (!this.validateCurrentStep()) return;
 
             this.loading=true;
             const step  = this.currentStep();
@@ -431,15 +577,26 @@ function intakeFlow(intakeId, steps){
                 }
 
                 const data = await res.json();
-                if (data.complete){ this.complete = true; return; }
+
+                // altijd draft updaten
+                this.saveDraft();
+
+                if (data.complete){
+                    this.complete = true;
+                    this.clearDraft(); // klaar → draft weg
+                    return;
+                }
 
                 if (this.isLast()){
                     this.complete = true;
+                    this.clearDraft();
                     return;
                 }
+
                 this.stepIndex++;
                 this.resetFields();
                 this.watchStep();
+                this.saveDraft();
 
             } catch (e){
                 this.error='Netwerkfout. Probeer opnieuw.';
@@ -449,16 +606,18 @@ function intakeFlow(intakeId, steps){
         },
 
         skipStep(){
-        this.error='';
-            if (!this.isOptional(this.currentStep())) return;  // ✅ NIEUW
+            this.error='';
+            if (!this.isOptional(this.currentStep())) return;
 
             if (this.isLast()){
                 this.complete = true;
+                this.clearDraft();
                 return;
             }
             this.stepIndex++;
             this.resetFields();
             this.watchStep();
+            this.saveDraft();
         }
     }
 }

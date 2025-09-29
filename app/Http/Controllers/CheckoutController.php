@@ -119,6 +119,9 @@ class CheckoutController extends Controller
         return view('checkout.cancel')->withErrors([
             'payment' => 'We konden je betaling niet als voltooid bevestigen. Als je wel hebt betaald, refresh deze pagina of neem contact op.'
         ]);
+
+        \Illuminate\Support\Facades\Auth::login($user);
+        \Log::info('Intake.storeStep: user logged in', ['user_id' => $user->id]);
     }
 
     public function cancel()

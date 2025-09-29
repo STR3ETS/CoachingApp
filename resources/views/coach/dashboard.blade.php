@@ -10,7 +10,7 @@
 <div class="grid gap-3 grid-cols-1 sm:grid-cols-3 mb-6">
     <a href="{{ route('coach.threads.index') }}"
        class="p-4 bg-[#c8ab7a] hover:bg-[#a89067] transition duration-300 rounded">
-        <div class="font-semibold text-white">Alle threads</div>
+        <div class="font-semibold text-white">Alle gesprekken</div>
         <p class="text-sm text-white">Bekijk en beantwoord gesprekken</p>
     </a>
 

@@ -24,43 +24,43 @@
 @endif
 
 <ul class="mt-7 flex flex-col gap-2">
-@forelse($threads as $t)
-    @php
-        $href = $role === 'client'
-        ? route('client.threads.show', $t)
-        : route('coach.threads.show',  $t);
-
-        $clientName = data_get($t, 'client.user.name')
-        ?? data_get($t, 'client.name')
-        ?? data_get($t, 'client_name')
-        ?? 'Onbekende klant';
-    @endphp
     <h2 class="text-lg font-bold">Gesprekken</h2>
-    <li>
-        <a href="{{ $href }}"
-        class="p-6 bg-white rounded-2xl border hover:border-[#c8ab7a] flex items-center justify-between focus:outline-none transition duration-300">
-            <div>
+    @forelse($threads as $t)
+        @php
+            $href = $role === 'client'
+            ? route('client.threads.show', $t)
+            : route('coach.threads.show',  $t);
+
+            $clientName = data_get($t, 'client.user.name')
+            ?? data_get($t, 'client.name')
+            ?? data_get($t, 'client_name')
+            ?? 'Onbekende klant';
+        @endphp
+        <li>
+            <a href="{{ $href }}"
+            class="p-6 bg-white rounded-2xl border hover:border-[#c8ab7a] flex items-center justify-between focus:outline-none transition duration-300">
+                <div>
+                    @if($role === 'coach')
+                        <span class="text-xs text-gray-500 inline-flex items-center px-2 py-0.5 rounded border mb-2">
+                            {{ $clientName }}
+                        </span>
+                    @endif
+
+                    <div class="font-semibold text-sm mb-2">
+                        {{ $t->subject ?? 'Gesprek' }}
+                    </div>
+
+                    <div class="flex text-xs items-center gap-2">
+                        <span>{{ $t->created_at->format('d-m-Y H:i') }}</span>
+                    </div>
+                </div>
                 @if($role === 'coach')
-                    <span class="text-xs text-gray-500 inline-flex items-center px-2 py-0.5 rounded border mb-2">
-                        {{ $clientName }}
-                    </span>
+                    <div class="w-4 h-4 bg-green-500 animate-pulse rounded-full"></div>
                 @endif
-
-                <div class="font-semibold text-sm mb-2">
-                    {{ $t->subject ?? 'Gesprek' }}
-                </div>
-
-                <div class="flex text-xs items-center gap-2">
-                    <span>{{ $t->created_at->format('d-m-Y H:i') }}</span>
-                </div>
-            </div>
-            @if($role === 'coach')
-                <div class="w-4 h-4 bg-green-500 animate-pulse rounded-full"></div>
-            @endif
-        </a>
-    </li>
-@empty
-    <li class="p-3 bg-white rounded border text-sm text-gray-500">Geen threads gevonden.</li>
-@endforelse
+            </a>
+        </li>
+    @empty
+        <li class="p-3 bg-white rounded border text-sm text-gray-500">Geen threads gevonden.</li>
+    @endforelse
 </ul>
 @endsection

@@ -14,7 +14,7 @@
             $ROY_ID   = 3;
         @endphp
         @if($coachId === $NICKY_ID)
-            <div class="min-w-[250px] max-w-[200px] h-fit p-6 bg-white rounded-3xl mt-[6.5rem]">
+            <div class="min-w-[250px] max-w-[200px] h-fit p-6 bg-white rounded-3xl md:mt-[6.5rem]">
                 <div class="flex items-center gap-2">
                     <div class="w-10 h-10 rounded-full bg-black bg-cover bg-top relative bg-[url(https://cdn6.site-media.eu/images/640%2C1160x772%2B130%2B112/18694492/coachNicky-MjbAPBl6Pr1a23o9d6zbqA.webp)]">
                         <div class="w-3 h-3 bg-green-500 animate-ping rounded-full absolute left-0 top-0"></div>
@@ -27,7 +27,7 @@
                 </div>
             </div>
         @elseif($coachId === $ELINE_ID)
-            <div class="min-w-[250px] max-w-[200px] h-fit p-6 bg-white rounded-3xl mt-[6.5rem]">
+            <div class="min-w-[250px] max-w-[200px] h-fit p-6 bg-white rounded-3xl md:mt-[6.5rem]">
                 <div class="flex items-center gap-2">
                     <div class="w-10 h-10 rounded-full bg-black bg-cover bg-top relative bg-[url(https://cdn6.site-media.eu/images/576%2C1160x772%2B150%2B121/18694504/coachEline-DVsTZnUZ-eQ_EWm1zNyfww.webp)]">
                         <div class="w-3 h-3 bg-green-500 animate-ping rounded-full absolute left-0 top-0"></div>
@@ -40,7 +40,7 @@
                 </div>
             </div>
         @elseif($coachId === $ROY_ID)
-            <div class="min-w-[250px] max-w-[200px] h-fit p-6 bg-white rounded-3xl mt-[6.5rem]">
+            <div class="min-w-[250px] max-w-[200px] h-fit p-6 bg-white rounded-3xl md:mt-[6.5rem]">
                 <div class="flex items-center gap-2">
                     <div class="w-10 h-10 rounded-full bg-black bg-cover bg-top relative bg-[url(https://cdn6.site-media.eu/images/576%2C1160x772%2B134%2B41/18694509/coachRoy-LCXiB9ufGNk2uXEnykijBA.webp)]">
                         <div class="w-3 h-3 bg-green-500 animate-ping rounded-full absolute left-0 top-0"></div>
